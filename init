@@ -1,0 +1,14 @@
+#!/bin/bash
+
+MEDIAWIKI_API_URL="${MEDIAWIKI_API_URL:-http://localhost/w/api.php}"
+MEDIAWIKI_DOMAIN="${MEDIAWIKI_DOMAIN:-localhost}"
+MEDIAWIKI_PREFIX="${MEDIAWIKI_PREFIX:-localhost}"
+NUM_WORKERS="${NUM_WORKERS:-4}"
+
+cat /node_modules/parsoid/localsettings.js.example \
+	| sed -e "s@uri: 'http://localhost/w/api.php'@uri: '${MEDIAWIKI_API_URL}'@" \
+	| sed -e "s@domain: 'localhost'@domain: '${MEDIAWIKI_DOMAIN}'@" \
+	| sed -e "s@prefix: 'localhost'@prefix: '${MEDIAWIKI_PREFIX}'@" \
+	> /node_modules/parsoid/localsettings.js
+
+exec tini -- node /node_modules/parsoid/bin/server.js --num-workers="${NUM_WORKERS}"
