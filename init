@@ -5,10 +5,11 @@ MEDIAWIKI_DOMAIN="${MEDIAWIKI_DOMAIN:-localhost}"
 MEDIAWIKI_PREFIX="${MEDIAWIKI_PREFIX:-localhost}"
 NUM_WORKERS="${NUM_WORKERS:-4}"
 
-cat /node_modules/parsoid/localsettings.js.example \
+cat /node_modules/parsoid/config.example.yaml \
 	| sed -e "s@uri: 'http://localhost/w/api.php'@uri: '${MEDIAWIKI_API_URL}'@" \
 	| sed -e "s@domain: 'localhost'@domain: '${MEDIAWIKI_DOMAIN}'@" \
-	| sed -e "s@prefix: 'localhost'@prefix: '${MEDIAWIKI_PREFIX}'@" \
-	> /node_modules/parsoid/localsettings.js
+	| sed -e "s@#metrics:@metrics:@" \
+	| sed -e "s@#\(\s*type: log\)@\1@" \
+	> /node_modules/parsoid/config.yaml
 
-exec tini -- node /node_modules/parsoid/bin/server.js --num-workers="${NUM_WORKERS}"
+exec /usr/bin/tini -- node /node_modules/parsoid/bin/server.js --config=/node_modules/parsoid/config.yaml --num-workers="${NUM_WORKERS}"
