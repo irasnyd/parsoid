@@ -1,6 +1,8 @@
 Introduction
 ============
 
+**OBSOLETE**: This project is obsolete. Please use the [upstream Parsoid containers](https://hub.docker.com/r/thenets/parsoid). It is now archived for historical purposes.
+
 This is a Docker container for the
 [Mediawiki Parsoid application](https://www.mediawiki.org/wiki/Parsoid).
 This is meant to be used with the
